@@ -1,7 +1,8 @@
 // src/api/api.js
 import axios from "axios";
 
-const API_URL = "http://localhost:3000"; // ✅ arahkan ke port backend kamu
+const API_URL =
+  "https://cautious-dollop-v677796g5gxpfpx57-3000.app.github.dev/"; // ✅ arahkan ke port backend kamu
 
 function getToken() {
   return localStorage.getItem("token");
