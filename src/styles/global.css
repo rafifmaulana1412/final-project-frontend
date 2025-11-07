@@ -1,0 +1,161 @@
+/* 🌈 Background gradasi global */
+body {
+  background: linear-gradient(135deg, #0d6efd, #6610f2);
+  min-height: 100vh;
+  background-attachment: fixed;
+  background-size: cover;
+  background-repeat: no-repeat;
+  font-family: "Poppins", "Inter", sans-serif;
+  color: #212529;
+}
+
+/* ✨ Navbar transparan elegan */
+.navbar {
+  background: rgba(255, 255, 255, 0.8) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.navbar .nav-link {
+  color: #212529 !important;
+  font-weight: 500;
+}
+
+.navbar .nav-link.active {
+  color: #0d6efd !important;
+  font-weight: 600;
+}
+
+/* 🧭 Sidebar semi-transparan */
+.sidebar {
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(8px);
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.sidebar .nav-link {
+  color: #212529 !important;
+  border-radius: 6px;
+  margin: 4px 6px;
+  transition: all 0.2s ease;
+}
+
+.sidebar .nav-link:hover {
+  background: rgba(13, 110, 253, 0.15) !important;
+  color: #0d6efd !important;
+}
+
+.sidebar .nav-link.active {
+  background: #0d6efd !important;
+  color: white !important;
+}
+
+/* 📦 Card elegan */
+.card {
+  border: none !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* 🧾 Tabel stylish */
+.table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table thead {
+  background: linear-gradient(90deg, #0d6efd, #6f42c1) !important;
+  color: white !important;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(13, 110, 253, 0.1) !important;
+  transition: 0.2s ease;
+}
+
+/* ✨ Tombol modern */
+.btn {
+  border-radius: 10px !important;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #0d6efd, #6f42c1);
+  border: none;
+}
+
+.btn-primary:hover {
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-warning {
+  background: linear-gradient(90deg, #ffc107, #fd7e14);
+  border: none;
+}
+
+.btn-danger {
+  background: linear-gradient(90deg, #dc3545, #c82333);
+  border: none;
+}
+
+/* 🧾 Input & form */
+input.form-control,
+select.form-select {
+  border-radius: 10px !important;
+  border: 1px solid #dee2e6 !important;
+  box-shadow: none !important;
+  transition: 0.2s;
+}
+
+input:focus,
+select:focus {
+  border-color: #6f42c1 !important;
+  box-shadow: 0 0 0 0.2rem rgba(111, 66, 193, 0.25) !important;
+}
+
+/* 💬 Alert styling */
+.alert {
+  border-radius: 10px !important;
+  font-weight: 500;
+}
+
+/* 🧍 Login & Register backgrounds */
+.auth-bg {
+  background: linear-gradient(135deg, #6610f2, #0d6efd);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 🩵 Smooth transition for all */
+* {
+  transition: all 0.2s ease;
+}
+
+.cart-bounce {
+  animation: bounceCart 0.5s ease;
+}
+
+@keyframes bounceCart {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
