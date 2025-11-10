@@ -9,7 +9,12 @@ export default function Products() {
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
-  const [form, setForm] = useState({ name: "", price: "", categoryId: "" });
+  const [form, setForm] = useState({
+    name: "",
+    price: "",
+    categoryId: "",
+    description: "",
+  });
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [editing, setEditing] = useState(null);
@@ -32,13 +37,11 @@ export default function Products() {
     load();
   }, []);
 
-  // ✅ Filter berdasarkan kategori
   function handleFilter(categoryName) {
     setSelectedCategory(categoryName);
     applyFilter(categoryName, searchQuery);
   }
 
-  // ✅ Filter kombinasi kategori + search
   function applyFilter(categoryName, query) {
     let filtered = products;
 
@@ -52,7 +55,6 @@ export default function Products() {
       );
     }
 
-    // Tambah animasi halus saat berganti filter
     const container = document.getElementById("menu-container");
     if (container) {
       container.style.opacity = 0;
@@ -65,7 +67,6 @@ export default function Products() {
     }
   }
 
-  // ✅ Search handler
   function handleSearch(e) {
     const query = e.target.value;
     setSearchQuery(query);
@@ -79,21 +80,25 @@ export default function Products() {
       formData.append("name", form.name);
       formData.append("price", form.price);
       formData.append("categoryId", form.categoryId);
+      formData.append("description", form.description);
       if (imageFile) formData.append("image", imageFile);
 
       if (editing) {
         await api.menus.update(editing, formData);
+        alert("✅ Menu berhasil diperbarui!");
       } else {
         await api.menus.create(formData);
+        alert("✅ Menu berhasil ditambahkan!");
       }
 
-      setForm({ name: "", price: "", categoryId: "" });
+      setForm({ name: "", price: "", categoryId: "", description: "" });
       setImageFile(null);
       setPreview(null);
       setEditing(null);
-      load();
+      await load();
     } catch (err) {
       console.error("❌ Failed to save product:", err);
+      alert("❌ Gagal menambahkan menu. Coba lagi!");
     }
   }
 
@@ -118,10 +123,8 @@ export default function Products() {
     >
       <h3 className="text-center fw-bold text-primary mb-4">🍽️ Products</h3>
 
-      {/* ✅ Search Bar + Filter Category */}
       {user?.role === "customer" && (
         <div className="text-center mb-4">
-          {/* Search bar */}
           <div className="mb-3 d-flex justify-content-center">
             <input
               type="text"
@@ -137,7 +140,6 @@ export default function Products() {
             />
           </div>
 
-          {/* Responsive category scroll */}
           <div
             className="d-flex justify-content-center gap-2 flex-nowrap overflow-auto px-2"
             style={{ scrollBehavior: "smooth" }}
@@ -169,7 +171,6 @@ export default function Products() {
         </div>
       )}
 
-      {/* ✅ Form (Admin/Staff Only) */}
       {user?.role !== "customer" && (
         <form
           onSubmit={handleSubmit}
@@ -195,6 +196,17 @@ export default function Products() {
               value={form.price}
               onChange={(e) => setForm({ ...form, price: e.target.value })}
               required
+            />
+          </div>
+          <div className="col-md-3">
+            <input
+              name="description"
+              placeholder="Description"
+              className="form-control"
+              value={form.description}
+              onChange={(e) =>
+                setForm({ ...form, description: e.target.value })
+              }
             />
           </div>
           <div className="col-md-3">
@@ -248,7 +260,6 @@ export default function Products() {
         </form>
       )}
 
-      {/* ✅ Product Grid (dengan animasi transisi) */}
       <div
         id="menu-container"
         className="row g-4"
@@ -275,7 +286,6 @@ export default function Products() {
               <div className="card-body d-flex flex-column">
                 <h5 className="fw-semibold">{p.name}</h5>
 
-                {/* ✅ Tambahan deskripsi singkat */}
                 {p.description && (
                   <p
                     className="text-muted small mb-1"
@@ -308,6 +318,7 @@ export default function Products() {
                             name: p.name,
                             price: p.price,
                             categoryId: p.categoryId,
+                            description: p.description || "",
                           });
                           setEditing(p.id);
                           setPreview(

@@ -1,7 +1,7 @@
 // src/api/api.js
 import axios from "axios";
 
-const API_URL = "https://bookish-eureka-97444r7qx9jr3gjj-3000.app.github.dev"; // ✅ arahkan ke port backend kamu
+const API_URL = "http://localhost:3000"; // ✅ arahkan ke port backend kamu
 
 function getToken() {
   return localStorage.getItem("token");
@@ -118,40 +118,33 @@ const api = {
   menus: {
     getAll: () => get("/menus", false),
     getById: (id) => get(`/menus/${id}`, false),
-    create: (data) => post("/menus", data),
-    update: (id, data) => put(`/menus/${id}`, data),
-    delete: (id) => del(`/menus/${id}`), // ----- MENUS (PRODUCTS) -----
-    menus: {
-      getAll: () => get("/menus", false),
-      getById: (id) => get(`/menus/${id}`, false),
 
-      // ✅ pakai multipart biar bisa upload image
-      create: async (formData) => {
-        const token = getToken();
-        const res = await fetch(`${API_URL}/menus`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`, // ⚠️ jangan tambahkan Content-Type manual!
-          },
-          body: formData, // 🧩 kirim FormData langsung
-        });
-        return handleResponse(res);
-      },
-
-      update: async (id, formData) => {
-        const token = getToken();
-        const res = await fetch(`${API_URL}/menus/${id}`, {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        });
-        return handleResponse(res);
-      },
-
-      delete: (id) => del(`/menus/${id}`),
+    // ✅ pakai multipart biar bisa upload image
+    create: async (formData) => {
+      const token = getToken();
+      const res = await fetch(`${API_URL}/menus`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // ⚠️ jangan tambahkan Content-Type manual!
+        },
+        body: formData, // 🧩 kirim FormData langsung
+      });
+      return handleResponse(res);
     },
+
+    update: async (id, formData) => {
+      const token = getToken();
+      const res = await fetch(`${API_URL}/menus/${id}`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+      return handleResponse(res);
+    },
+
+    delete: (id) => del(`/menus/${id}`),
   },
 
   // ----- CATEGORIES -----
