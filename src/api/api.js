@@ -1,7 +1,7 @@
 // src/api/api.js
 import axios from "axios";
 
-const API_URL = "http://localhost:3000"; // ✅ arahkan ke port backend kamu
+const API_URL = "https://final-project-backend-production-8bc6.up.railway.app"; // ✅ arahkan ke port backend kamu
 
 function getToken() {
   return localStorage.getItem("token");
