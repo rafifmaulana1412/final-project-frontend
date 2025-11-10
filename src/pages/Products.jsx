@@ -3,6 +3,8 @@ import api from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 
+const BASE_URL = import.meta.env.VITE_API_URL || "https://final-project-backend-production-8bc6.up.railway.app";
+
 export default function Products() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -271,7 +273,7 @@ export default function Products() {
               <img
                 src={
                   p.image
-                    ? `http://localhost:3000/uploads/${p.image}`
+                    ? `${BASE_URL}${p.image.startsWith("/uploads") ? p.image : `/uploads/${p.image}`}`
                     : "https://via.placeholder.com/200x150?text=No+Image"
                 }
                 className="card-img-top"
@@ -323,7 +325,7 @@ export default function Products() {
                           setEditing(p.id);
                           setPreview(
                             p.image
-                              ? `http://localhost:3000/uploads/${p.image}`
+                              ? `${BASE_URL}${p.image.startsWith("/uploads") ? p.image : `/uploads/${p.image}`}`
                               : null
                           );
                         }}
