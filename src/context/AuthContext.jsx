@@ -11,14 +11,33 @@ export function AuthProvider({ children }) {
     try {
       setLoading(true);
       const res = await api.auth.login(email, password);
-      const token = res.token;
 
-      if (token) {
-        localStorage.setItem("token", token);
-        setUser(res.user || { role: "customer" }); // fallback role
+      if (res?.token) {
+        localStorage.setItem("token", res.token);
+        setUser(res.user || { role: "customer" });
       }
 
       setLoading(false);
       return res;
     } catch (err) {
-      setLoading(false
+      console.error("❌ Login error:", err);
+      setLoading(false);
+      throw err;
+    }
+  }
+
+  function logout() {
+    localStorage.removeItem("token");
+    setUser(null);
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, loading, login, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
+}
