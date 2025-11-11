@@ -40,7 +40,7 @@ const categories = { getAll: async () => (await instance.get("/categories")).dat
 const orders = { getAll: async () => (await instance.get("/orders")).data };
 const cart = {
   getAll: async () => (await instance.get("/cart")).data,
-  addItem: async (menuId, quantity) => (await instance.post("/cart", { menuId, quantity })).data,
+  addItem: async (menuId, quantity) => (await instance.post("/cart/add", { menuId, quantity })).data,
   removeItem: async (id) => (await instance.delete(`/cart/${id}`)).data,
 };
 
