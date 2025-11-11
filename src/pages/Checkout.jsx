@@ -9,6 +9,10 @@ export default function Checkout() {
   const [address, setAddress] = useState(""); // ✅ baru
   const [paymentMethod, setPaymentMethod] = useState("Bank Transfer"); // ✅ baru
   const navigate = useNavigate();
+  const BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://final-project-backend-production-8bc6.up.railway.app";
+
 
   async function loadCart() {
     try {
@@ -75,7 +79,7 @@ export default function Checkout() {
       const token = localStorage.getItem("token");
 
       // 🔹 1. Buat order baru
-      const res = await fetch("http://localhost:3000/orders", {
+     const res = await fetch(`${BASE_URL}/orders`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -96,9 +100,7 @@ export default function Checkout() {
       console.log("✅ Order berhasil dibuat:", orderId);
 
       // 🔹 2. Simulasi payment
-      const payRes = await fetch(
-        `http://localhost:3000/orders/${orderId}/pay`,
-        {
+      const payRes = await fetch(`${BASE_URL}/orders/${orderId}/pay`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,
