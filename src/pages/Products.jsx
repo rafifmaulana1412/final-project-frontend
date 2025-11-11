@@ -3,7 +3,9 @@ import api from "../api/api";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "https://final-project-backend-production-8bc6.up.railway.app";
+const BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://final-project-backend-production-8bc6.up.railway.app";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
@@ -273,18 +275,18 @@ export default function Products() {
               <img
                 src={
                   p.image
-                     ? `https://final-project-backend-production-8bc6.up.railway.app/uploads/${p.image}`
-                     : "https://via.placeholder.com/200x150?text=No+Image"
-                    }
-                     className="card-img-top"
-                      alt={p.name}
-                      style={{
-                      height: "180px",
-                      objectFit: "cover",
-                      borderTopLeftRadius: "12px",
-                      borderTopRightRadius: "12px",
-                        }}
-                  />
+                    ? `https://final-project-backend-production-8bc6.up.railway.app/uploads/${p.image}`
+                    : "https://via.placeholder.com/200x150?text=No+Image"
+                }
+                className="card-img-top"
+                alt={p.name}
+                style={{
+                  height: "180px",
+                  objectFit: "cover",
+                  borderTopLeftRadius: "12px",
+                  borderTopRightRadius: "12px",
+                }}
+              />
 
               <div className="card-body d-flex flex-column">
                 <h5 className="fw-semibold">{p.name}</h5>
@@ -326,9 +328,8 @@ export default function Products() {
                           setEditing(p.id);
                           setPreview(
                             p.image
-                             p.image
-                                ? `https://final-project-backend-production-8bc6.up.railway.app/uploads/${p.image}`
-                                : null
+                              ? `https://final-project-backend-production-8bc6.up.railway.app/uploads/${p.image}`
+                              : null
                           );
                         }}
                       >
