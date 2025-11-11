@@ -273,19 +273,19 @@ export default function Products() {
               <img
                 src={
                   p.image
-                    p.image
-                      ? `https://final-project-backend-production-8bc6.up.railway.app/uploads/${p.image}`
-                      : "https://via.placeholder.com/200x150?text=No+Image"
-                }
-                className="card-img-top"
-                alt={p.name}
-                style={{
-                  height: "180px",
-                  objectFit: "cover",
-                  borderTopLeftRadius: "12px",
-                  borderTopRightRadius: "12px",
-                }}
-              />
+                     ? `https://final-project-backend-production-8bc6.up.railway.app/uploads/${p.image}`
+                     : "https://via.placeholder.com/200x150?text=No+Image"
+                    }
+                     className="card-img-top"
+                      alt={p.name}
+                      style={{
+                      height: "180px",
+                      objectFit: "cover",
+                      borderTopLeftRadius: "12px",
+                      borderTopRightRadius: "12px",
+                        }}
+                  />
+
               <div className="card-body d-flex flex-column">
                 <h5 className="fw-semibold">{p.name}</h5>
 
