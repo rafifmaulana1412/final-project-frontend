@@ -275,7 +275,7 @@ export default function Products() {
               <img
                 src={
                   p.image
-                    ? `https://final-project-backend-production-8bc6.up.railway.app/uploads/${p.image}`
+                    ? `${BASE_URL}/uploads/${p.image}`
                     : "https://via.placeholder.com/200x150?text=No+Image"
                 }
                 className="card-img-top"
@@ -326,11 +326,10 @@ export default function Products() {
                             description: p.description || "",
                           });
                           setEditing(p.id);
-                          setPreview(
-                            p.image
-                              ? `https://final-project-backend-production-8bc6.up.railway.app/uploads/${p.image}`
-                              : null
-                          );
+                          const previewUrl = p.image
+                            ? `${BASE_URL}/uploads/${p.image}`
+                            : null;
+                          setPreview(previewUrl);
                         }}
                       >
                         ✏️ Edit
