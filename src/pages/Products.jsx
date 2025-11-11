@@ -273,8 +273,9 @@ export default function Products() {
               <img
                 src={
                   p.image
-                    ? `${BASE_URL}${p.image.startsWith("/uploads") ? p.image : `/uploads/${p.image}`}`
-                    : "https://via.placeholder.com/200x150?text=No+Image"
+                    p.image
+                      ? `https://final-project-backend-production-8bc6.up.railway.app/uploads/${p.image}`
+                      : "https://via.placeholder.com/200x150?text=No+Image"
                 }
                 className="card-img-top"
                 alt={p.name}
@@ -325,8 +326,9 @@ export default function Products() {
                           setEditing(p.id);
                           setPreview(
                             p.image
-                              ? `${BASE_URL}${p.image.startsWith("/uploads") ? p.image : `/uploads/${p.image}`}`
-                              : null
+                             p.image
+                                ? `https://final-project-backend-production-8bc6.up.railway.app/uploads/${p.image}`
+                                : null
                           );
                         }}
                       >
