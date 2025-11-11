@@ -9,24 +9,21 @@ export default function Register() {
   const [success, setSuccess] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
+  setSuccess("");
 
-    try {
-      let res;
-      if (role === "admin") res = await api.auth.registerAdmin(form);
-      else if (role === "staff") res = await api.auth.registerStaff(form);
-      else if (role === "editor") res = await api.auth.registerEditor(form);
-      else res = await api.auth.registerCustomer(form);
+  try {
+    const res = await api.auth.register({ ...form, role });
 
-      setSuccess(`${role} registered successfully!`);
-      setTimeout(() => navigate("/login"), 2000);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
+    setSuccess(`${role} registered successfully!`);
+    setTimeout(() => navigate("/login"), 2000);
+  } catch (err) {
+    setError(err.message || "Registration failed");
+  }
+};
+
 
   return (
     <div
