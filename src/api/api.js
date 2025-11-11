@@ -1,9 +1,32 @@
 import axios from "axios";
 
-// Gunakan environment variable agar bisa otomatis pakai URL Railway di production
+// ✅ gunakan environment variable biar otomatis pilih URL Railway saat di-deploy
 const BASE_URL = import.meta.env.VITE_API_URL || "https://final-project-backend-production-8bc6.up.railway.app";
 
 const api = {
+  // 🔐 AUTH
+  auth: {
+    login: async (email, password) => {
+      const res = await axios.post(`${BASE_URL}/auth/login`, { email, password });
+      return res.data;
+    },
+    register: async (name, email, password) => {
+      const res = await axios.post(`${BASE_URL}/auth/register`, {
+        name,
+        email,
+        password,
+      });
+      return res.data;
+    },
+    me: async (token) => {
+      const res = await axios.get(`${BASE_URL}/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return res.data;
+    },
+  },
+
+  // 🍽️ MENUS
   menus: {
     getAll: async () => {
       const res = await axios.get(`${BASE_URL}/menus`);
@@ -31,6 +54,7 @@ const api = {
     },
   },
 
+  // 🧭 CATEGORIES
   categories: {
     getAll: async () => {
       const res = await axios.get(`${BASE_URL}/categories`);
@@ -38,6 +62,7 @@ const api = {
     },
   },
 
+  // 🛒 CART
   cart: {
     addItem: async (menuId, quantity = 1) => {
       const token = localStorage.getItem("token");
