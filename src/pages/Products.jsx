@@ -275,7 +275,7 @@ export default function Products() {
               <img
                 src={
                   p.image
-                    ? `${BASE_URL}/uploads/${p.image}`
+                    ? `${BASE_URL}${p.image}`
                     : "https://via.placeholder.com/200x150?text=No+Image"
                 }
                 className="card-img-top"
