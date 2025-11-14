@@ -21,14 +21,28 @@ export default function Categories() {
 
   async function handleSubmit(e) {
     e.preventDefault();
+
     try {
-      if (editing) await api.categories.update(editing, form);
-      else await api.categories.create(form);
+      if (editing) {
+        await api.categories.update(editing, { name: form.name });
+      } else {
+        await api.categories.create({ name: form.name });
+      }
+
       setForm({ name: "" });
       setEditing(null);
       load();
     } catch (err) {
       console.error("❌ Failed to save category:", err);
+    }
+  }
+
+  async function handleDelete(id) {
+    try {
+      await api.categories.delete(id);
+      load();
+    } catch (err) {
+      console.error("❌ Failed to delete:", err);
     }
   }
 
@@ -74,7 +88,7 @@ export default function Categories() {
                   </button>
                   <button
                     className="btn btn-sm btn-danger"
-                    onClick={() => api.categories.delete(cat.id).then(load)}
+                    onClick={() => handleDelete(cat.id)}
                   >
                     🗑️ Delete
                   </button>
