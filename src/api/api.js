@@ -29,13 +29,17 @@ const menus = {
   getAll: async () => (await instance.get("/menus")).data,
   getById: async (id) => (await instance.get(`/menus/${id}`)).data,
   create: async (formData) =>
-    (await instance.post("/menus", formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })).data,
+    (
+      await instance.post("/menus", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+    ).data,
   update: async (id, formData) =>
-    (await instance.put(`/menus/${id}`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
-    })).data,
+    (
+      await instance.put(`/menus/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+    ).data,
   delete: async (id) => (await instance.delete(`/menus/${id}`)).data,
 };
 
@@ -52,6 +56,9 @@ const categories = {
 const orders = {
   getAll: async () => (await instance.get("/orders")).data,
   getById: async (id) => (await instance.get(`/orders/${id}`)).data,
+
+  // 🟢 FIXED — Tambahkan DELETE order biar tombol delete berfungsi
+  delete: async (id) => (await instance.delete(`/orders/${id}`)).data,
 };
 
 // ================== CART ==================
