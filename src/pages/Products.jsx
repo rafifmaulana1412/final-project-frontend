@@ -39,17 +39,24 @@ export default function Products() {
   // ✨ NEW — highlight & animation state
   const [newItemId, setNewItemId] = useState(null);
 
-  async function load() {
-    try {
-      const menus = await api.menus.getAll();
-      const cats = await api.categories.getAll();
-      setProducts(menus);
-      setFilteredProducts(menus);
-      setCategories(cats);
-    } catch (err) {
-      console.error("❌ Failed to load products:", err);
-    }
+ async function load() {
+  try {
+    const menus = await api.menus.getAll();
+    const cats = await api.categories.getAll();
+
+    setProducts(menus);
+    setCategories(cats);
+
+    // 🔥 Jangan reset filteredProducts
+    // setFilteredProducts(menus);  <-- HAPUS
+
+    // 🔥 Terapkan ulang filter saat ini
+    applyFilter(selectedCategory, searchQuery);
+
+  } catch (err) {
+    console.error("❌ Failed to load products:", err);
   }
+}
 
   useEffect(() => {
     load();
