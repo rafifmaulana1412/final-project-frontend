@@ -14,7 +14,7 @@ export default function Products() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Form add NEW menu
+  // Form menu add
   const [form, setForm] = useState({
     name: "",
     price: "",
@@ -24,19 +24,20 @@ export default function Products() {
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState(null);
 
-  // MODAL EDIT
+  // Modal edit
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editData, setEditData] = useState(null);
   const [editPreview, setEditPreview] = useState(null);
 
-  // MODAL DELETE
+  // Modal delete
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
 
-  const [editing, setEditing] = useState(null);
-
   const { user } = useAuth();
   const { incrementCart } = useCart();
+
+  // ✨ NEW — highlight & animation state
+  const [newItemId, setNewItemId] = useState(null);
 
   async function load() {
     try {
@@ -90,24 +91,45 @@ export default function Products() {
     applyFilter(selectedCategory, query);
   }
 
+  // =============== ADD NEW MENU (with effects) ===============
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      const formData = new FormData();
-      formData.append("name", form.name);
-      formData.append("price", form.price);
-      formData.append("categoryId", form.categoryId);
-      formData.append("description", form.description);
-      if (imageFile) formData.append("image", imageFile);
+      const fd = new FormData();
+      fd.append("name", form.name);
+      fd.append("price", form.price);
+      fd.append("categoryId", form.categoryId);
+      fd.append("description", form.description);
+      if (imageFile) fd.append("image", imageFile);
 
-      await api.menus.create(formData);
+      // create menu
+      const result = await api.menus.create(fd);
       alert("✅ Menu berhasil ditambahkan!");
 
+      // reset form
       setForm({ name: "", price: "", categoryId: "", description: "" });
       setImageFile(null);
       setPreview(null);
-      setEditing(null);
+
       await load();
+
+      // apply filter ulang sesuai kategori sekarang
+      applyFilter(selectedCategory, searchQuery);
+
+      // Animasi highlight
+      const newId = result.id;
+      setNewItemId(newId);
+
+      // Auto scroll ke item baru
+      setTimeout(() => {
+        const element = document.getElementById(`menu-${newId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+      }, 300);
+
+      // remove highlight setelah 1.5 detik
+      setTimeout(() => setNewItemId(null), 1500);
     } catch (err) {
       console.error("❌ Failed to save product:", err);
       alert("❌ Gagal menambahkan menu. Coba lagi!");
@@ -160,9 +182,20 @@ export default function Products() {
         transition: "opacity 0.3s ease-in-out",
       }}
     >
+
+      {/* 🔥 KEYFRAME ANIMATION */}
+      <style>
+        {`
+          @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+          }
+        `}
+      </style>
+
       <h3 className="text-center fw-bold text-primary mb-4">🍽️ Products</h3>
 
-      {/* ============ SEARCH & FILTER (Customer only) ============= */}
+      {/* ============ SEARCH & FILTER ============= */}
       {user?.role === "customer" && (
         <div className="text-center mb-4">
           <div className="mb-3 d-flex justify-content-center">
@@ -212,7 +245,7 @@ export default function Products() {
         </div>
       )}
 
-      {/* ================= FORM ADD MENU (Staff/Admin) =============== */}
+      {/* ================= FORM ADD MENU ================= */}
       {user?.role !== "customer" && (
         <form
           onSubmit={handleSubmit}
@@ -229,6 +262,7 @@ export default function Products() {
               required
             />
           </div>
+
           <div className="col-md-2">
             <input
               name="price"
@@ -240,6 +274,7 @@ export default function Products() {
               required
             />
           </div>
+
           <div className="col-md-3">
             <input
               name="description"
@@ -251,6 +286,7 @@ export default function Products() {
               }
             />
           </div>
+
           <div className="col-md-3">
             <select
               name="categoryId"
@@ -267,6 +303,7 @@ export default function Products() {
               ))}
             </select>
           </div>
+
           <div className="col-md-3">
             <input
               type="file"
@@ -279,9 +316,11 @@ export default function Products() {
               }}
             />
           </div>
+
           <div className="col-auto">
             <button className="btn btn-primary">Add</button>
           </div>
+
           {preview && (
             <div className="mt-3 text-center">
               <img
@@ -307,8 +346,26 @@ export default function Products() {
         style={{ transition: "opacity 0.3s ease-in-out" }}
       >
         {filteredProducts.map((p) => (
-          <div key={p.id} className="col-md-4 col-lg-3">
-            <div className="card border-0 shadow-sm h-100">
+          <div
+            key={p.id}
+            id={`menu-${p.id}`}
+            className="col-md-4 col-lg-3"
+            style={{
+              transition: "0.4s",
+              opacity: newItemId === p.id ? 0 : 1,
+              animation: newItemId === p.id ? "fadeIn 0.6s forwards" : "none",
+            }}
+          >
+            <div
+              className="card border-0 shadow-sm h-100"
+              style={{
+                boxShadow:
+                  newItemId === p.id
+                    ? "0 0 12px 3px rgba(72, 157, 255, 0.7)"
+                    : "0 2px 6px rgba(0,0,0,0.15)",
+                transition: "0.4s",
+              }}
+            >
               <img
                 src={
                   p.image
@@ -346,6 +403,7 @@ export default function Products() {
                 <p className="text-muted small">
                   Category: {p.menuCategory?.name || "-"}
                 </p>
+
                 <p className="fw-bold text-success">
                   Rp {p.price?.toLocaleString()}
                 </p>
@@ -353,7 +411,7 @@ export default function Products() {
                 <div className="mt-auto">
                   {user?.role !== "customer" ? (
                     <div className="d-flex justify-content-between">
-                      {/* ===== EDIT BUTTON (MODAL) ===== */}
+                      {/* EDIT BUTTON */}
                       <button
                         className="btn btn-warning btn-sm"
                         onClick={() => {
@@ -373,7 +431,7 @@ export default function Products() {
                         ✏️ Edit
                       </button>
 
-                      {/* ===== DELETE BUTTON (CONFIRM MODAL) ===== */}
+                      {/* DELETE BUTTON */}
                       <button
                         className="btn btn-danger btn-sm"
                         onClick={() => {
@@ -407,7 +465,6 @@ export default function Products() {
         >
           <div className="modal-dialog modal-lg">
             <div className="modal-content p-4">
-
               <h4 className="fw-bold mb-3">Edit Menu</h4>
 
               <form
@@ -504,7 +561,7 @@ export default function Products() {
         </div>
       )}
 
-      {/* ===================== MODAL DELETE CONFIRM ===================== */}
+      {/* ===================== MODAL DELETE ===================== */}
       {deleteModalOpen && (
         <div
           className="modal fade show"
@@ -515,7 +572,6 @@ export default function Products() {
         >
           <div className="modal-dialog">
             <div className="modal-content p-3">
-
               <h4 className="fw-bold text-danger mb-3">Confirm Delete</h4>
 
               <p>
@@ -524,7 +580,6 @@ export default function Products() {
               </p>
 
               <div className="d-flex justify-content-end gap-2 mt-4">
-
                 <button
                   className="btn btn-secondary"
                   onClick={() => setDeleteModalOpen(false)}
@@ -544,9 +599,7 @@ export default function Products() {
                 >
                   Delete
                 </button>
-
               </div>
-
             </div>
           </div>
         </div>
